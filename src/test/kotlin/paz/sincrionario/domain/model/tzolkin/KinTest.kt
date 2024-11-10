@@ -6,7 +6,7 @@ import paz.sincrionario.domain.enums.tzolkin.Tone
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class KinKtTest {
+class KinTest {
 
     @Test
     fun `calculateX with valid inputs`() {
