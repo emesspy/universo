@@ -2,10 +2,14 @@ package paz.sincrionario
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import paz.sincrionario.domain.model.tzolkin.buildTzolkin
 
 @SpringBootApplication
 class UniversoApplication
 
 fun main(args: Array<String>) {
-	runApplication<UniversoApplication>(*args)
+    runApplication<UniversoApplication>(*args)
+    val tzolKin = buildTzolkin()
+    println(tzolKin)
+    print(tzolKin[86])
 }
