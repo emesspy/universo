@@ -40,7 +40,7 @@ fun buildTzolkin(): Map<Int, Kin> {
     for (i in 0 until TZOLKIN_SIZE) {
         val seal = Seal.entries[i % Seal.entries.size] // 20 Selos
         val tone = Tone.entries[i % Tone.entries.size] // 13 Tons
-        kins.put(idKin, Kin.of(idKin, seal, tone))
+        kins[idKin] = Kin.of(idKin, seal, tone)
         idKin++
     }
 
@@ -75,15 +75,11 @@ fun validateWithinRange(sealId: Int, toneId: Int) {
 }
 
 fun validateSealRange(sealId: Int) {
-    if (sealId <= 0 || sealId > Seal.entries.size) {
-        throw IllegalArgumentException("$sealId not within Tzolkin's range for a Seal")
-    }
+    require(sealId > 0 && sealId <= Seal.entries.size) { "$sealId not within Tzolkin's range for a Seal" }
 }
 
 fun validateToneRange(toneId: Int) {
-    if (toneId <= 0 || toneId > Tone.entries.size) {
-        throw IllegalArgumentException("$toneId not within Tzolkin's range for a Tone")
-    }
+    require(toneId > 0 && toneId <= Tone.entries.size) { "$toneId not within Tzolkin's range for a Tone" }
 }
 
 fun buildKinName(seal: Seal, tone: Tone): String {

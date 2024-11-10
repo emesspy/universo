@@ -13,7 +13,7 @@ class KinKtTest {
         val sealId = 6
         val toneId = 8
         val result = calculateX(sealId, toneId)
-        assertEquals(4, result, "Expected x to be 1 for sealId: $sealId and toneId: $toneId")
+        assertEquals(4, result, "Expected x to be 4 for sealId: $sealId and toneId: $toneId")
     }
 
     @Test

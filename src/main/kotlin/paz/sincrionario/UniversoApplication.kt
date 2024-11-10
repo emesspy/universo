@@ -11,5 +11,6 @@ fun main(args: Array<String>) {
     runApplication<UniversoApplication>(*args)
     val tzolKin = buildTzolkin()
     println(tzolKin)
-    print(tzolKin[86])
+    println(tzolKin[86])
+    println(tzolKin[37])
 }
