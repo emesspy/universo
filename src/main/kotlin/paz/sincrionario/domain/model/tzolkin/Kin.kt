@@ -3,7 +3,8 @@ package paz.sincrionario.domain.model.tzolkin
 import paz.sincrionario.domain.enums.tzolkin.Seal
 import paz.sincrionario.domain.enums.tzolkin.Tone
 
-val TZOLKIN_SIZE = 260
+// Tzolkin as 20x13=260 possibilities (Seal.entries.size x Tone.entries.size)
+const val TZOLKIN_SIZE = 260
 
 data class Kin private constructor(
     val id: Int,
@@ -48,7 +49,7 @@ fun buildTzolkin(): Map<Int, Kin> {
 
 fun calculateKinNumber(sealId: Int, toneId: Int): Int {
     val xValue = calculateX(sealId, toneId)
-    val candidate = xValue * 20 + sealId
+    val candidate = xValue * Seal.entries.size + sealId
     return if (candidate == TZOLKIN_SIZE) TZOLKIN_SIZE else candidate % TZOLKIN_SIZE
 }
 
@@ -73,7 +74,7 @@ fun validateWithinRange(sealId: Int, toneId: Int) {
     validateToneRange(toneId)
 }
 
-private fun validateSealRange(sealId: Int) {
+fun validateSealRange(sealId: Int) {
     if (sealId <= 0 || sealId > Seal.entries.size) {
         throw IllegalArgumentException("$sealId not within Tzolkin's range for a Seal")
     }
@@ -85,29 +86,32 @@ fun validateToneRange(toneId: Int) {
     }
 }
 
-private fun buildKinName(seal: Seal, tone: Tone): String {
+fun buildKinName(seal: Seal, tone: Tone): String {
     return "${seal._name} ${tone._name} ${seal.color}"
 }
 
-private fun findGuideKinNumber(seal: Seal, tone: Tone): Int {
+fun findGuideKinNumber(seal: Seal, tone: Tone): Int {
     val guideSealCalcResult = (seal.id + tone.hiddenSealAhead) % Seal.entries.size
-    val guideSealId = if (guideSealCalcResult == 0) 20 else guideSealCalcResult
+    val guideSealId = if (guideSealCalcResult == 0) Seal.entries.size else guideSealCalcResult
     return calculateKinNumber(guideSealId, tone.id)
 }
 
 fun findAnalogKinNumber(seal: Seal, tone: Tone): Int {
+    // Sum of pairs always is 19 (considering 20 = 0)
     val analogSealCalcResult = 19 - (seal.id % Seal.entries.size)
-    val analogSealId = if (analogSealCalcResult == 0) 20 else analogSealCalcResult
+    val analogSealId = if (analogSealCalcResult == 0) Seal.entries.size else analogSealCalcResult
     return calculateKinNumber(analogSealId, tone.id)
 }
 
-private fun findAntipodeKinNumber(seal: Seal, tone: Tone): Int {
+fun findAntipodeKinNumber(seal: Seal, tone: Tone): Int {
+    // Always 10 seals apart from each other (Seal.entries.size / 2)
     val antipodeSealCalcResult = (seal.id + 10) % Seal.entries.size
-    val antipodeSealId = if (antipodeSealCalcResult == 0) 20 else antipodeSealCalcResult
+    val antipodeSealId = if (antipodeSealCalcResult == 0) Seal.entries.size else antipodeSealCalcResult
     return calculateKinNumber(antipodeSealId, tone.id)
 }
 
 fun findHiddenKinNumber(seal: Seal, tone: Tone): Int {
+    // Sum of Seals always is (Seal.entries.size +1) and Sum of Tones always is (Tone.entries.size +1)
     val hiddenSealId = 21 - seal.id
     val hiddenToneId = 14 - tone.id
     return calculateKinNumber(hiddenSealId, hiddenToneId)
