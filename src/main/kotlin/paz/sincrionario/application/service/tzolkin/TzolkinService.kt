@@ -1,16 +1,20 @@
 package paz.sincrionario.application.service.tzolkin
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import paz.sincrionario.application.port.input.UseCase
-import paz.sincrionario.application.port.output.MyRepository
-import paz.sincrionario.domain.model.tzolkin.Kin
+import paz.sincrionario.application.port.input.GetKin
+import paz.sincrionario.domain.model.tzolkin.Tzolkin
 
 @Service
-class TzolkinService(private val repository: MyRepository) : UseCase {
-    override fun execute(input: String): String {
-        //val kin = Kin()
-        //val save = repository.save(kin)
-        //return save.id.toString()
-        return input;
+class TzolkinService {
+    val logger: Logger = LoggerFactory.getLogger(TzolkinService::class.java)
+
+    val getKin: GetKin = { id: Int ->
+        logger.info("Getting Kin $id...")
+        val kin = Tzolkin.getKin(id)!!
+        logger.info("Kin $id: $kin")
+        kin
     }
+
 }
