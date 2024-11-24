@@ -3,8 +3,7 @@ package paz.sincrionario.domain.model.tzolkin
 import paz.sincrionario.domain.enums.tzolkin.Seal
 import paz.sincrionario.domain.enums.tzolkin.Tone
 
-// Tzolkin as 20x13=260 possibilities (Seal.entries.size x Tone.entries.size)
-const val TZOLKIN_SIZE = 260
+
 
 data class Kin private constructor(
     val id: Int,
